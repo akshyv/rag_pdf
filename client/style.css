@@ -169,3 +169,260 @@ button:disabled {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
+
+
+/* Ask Question Section */
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+.section h2 {
+    color: #e2e8f0;
+    margin-top: 0;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.input-group input[type="text"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.input-group input[type="text"]::placeholder {
+    color: #64748b;
+}
+
+.results {
+    margin-top: 20px;
+}
+
+/* Answer Container */
+.answer-container {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.answer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #334155;
+}
+
+.answer-icon {
+    font-size: 1.5em;
+}
+
+.answer-label {
+    font-weight: 600;
+    color: #3b82f6;
+    font-size: 1.1em;
+}
+
+.answer-text {
+    color: #e2e8f0;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+/* Sources Container */
+.sources-container {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.sources-header {
+    font-weight: 600;
+    color: #f59e0b;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+.source-item {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.source-item:last-child {
+    margin-bottom: 0;
+}
+
+.source-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.source-number {
+    background: #3b82f6;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.source-filename {
+    color: #60a5fa;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.source-text {
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-size: 0.9em;
+    padding-left: 10px;
+    border-left: 3px solid #334155;
+}
+
+.search-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #1e293b;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+.search-section h2 {
+    color: #e2e8f0;
+    margin-top: 0;
+}
+
+.search-section input[type="text"] {
+    width: calc(100% - 110px);
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #0f172a;
+    color: #e2e8f0;
+    margin-right: 10px;
+}
+
+.search-section input[type="text"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.search-section input[type="text"]::placeholder {
+    color: #64748b;
+}
+
+#searchResults {
+    margin-top: 20px;
+}
+
+.results-header {
+    color: #94a3b8;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.result-item {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.result-number {
+    background: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.result-source {
+    color: #34d399;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.result-text {
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-size: 0.9em;
+    padding-left: 10px;
+    border-left: 3px solid #334155;
+}
+
+/* Delete Button Styling */
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-left: 8px;
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.delete-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Update file-actions to handle multiple buttons */
+.file-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.process-btn {
+    background-color: #28a745;
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.process-btn:hover {
+    background-color: #218838;
+}

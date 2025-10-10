@@ -16,11 +16,30 @@
             <button id="uploadBtn">Upload Files</button>
             <div id="uploadStatus"></div>
         </div>
+        
+        <!-- Ask Question Section (RAG with LLM) -->
+        <div class="section">
+            <h2>💬 Ask a Question</h2>
+            <div class="input-group">
+                <input type="text" id="askInput" placeholder="Ask a question about your documents..." />
+                <button id="askBtn">Ask</button>
+            </div>
+            <div id="askResults" class="results"></div>
+        </div>
+        
+        <!-- Files Section -->
 
         <div class="files-section">
             <h2>Uploaded Documents</h2>
             <button id="refreshBtn">Refresh List</button>
             <div id="filesList"></div>
+        </div>
+
+        <div class="search-section">
+            <h2>Search Documents</h2>
+            <input type="text" id="searchInput" placeholder="Ask a question about your documents...">
+            <button id="searchBtn">Search</button>
+            <div id="searchResults"></div>
         </div>
 
         <div class="viewer-section">

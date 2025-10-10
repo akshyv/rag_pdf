@@ -29,4 +29,5 @@ venv/
 # --- Custom Project Folders ---
 # Ignore the documents folder
 server/documents/*
+server/chroma_db/
 
