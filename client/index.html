@@ -9,7 +9,6 @@
 <body>
     <div class="container">
         <h1>RAG System</h1>
-        <div id="status">Checking server...</div>
         
         <div class="upload-section">
             <h2>Upload Documents</h2>
@@ -22,6 +21,13 @@
             <h2>Uploaded Documents</h2>
             <button id="refreshBtn">Refresh List</button>
             <div id="filesList"></div>
+        </div>
+
+        <div class="viewer-section">
+            <h2>Document Viewer</h2>
+            <div id="documentViewer">
+                <div class="empty-state">Select a document to view its content</div>
+            </div>
         </div>
     </div>
     <script src="app.js"></script>

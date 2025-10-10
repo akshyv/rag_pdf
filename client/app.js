@@ -1,21 +1,5 @@
 const API_URL = 'http://localhost:5000';
 
-// Check server health
-async function checkServer() {
-    const statusDiv = document.getElementById('status');
-    
-    try {
-        const response = await fetch(`${API_URL}/api/health`);
-        const data = await response.json();
-        
-        statusDiv.innerHTML = `Server: ${data.message}`;
-        statusDiv.className = 'success';
-    } catch (error) {
-        statusDiv.innerHTML = `Server not responding`;
-        statusDiv.className = 'error';
-    }
-}
-
 // Upload files
 async function uploadFiles() {
     const fileInput = document.getElementById('fileInput');
@@ -91,9 +75,9 @@ async function loadFiles() {
         }
         
         filesList.innerHTML = data.files.map(file => `
-            <div class="file-item">
-                <span>${file.name}</span>
-                <span>${formatFileSize(file.size)}</span>
+            <div class="file-item" onclick="viewDocument('${file.name}')">
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">${formatFileSize(file.size)}</span>
             </div>
         `).join('');
         
@@ -101,6 +85,41 @@ async function loadFiles() {
         filesList.innerHTML = '<div class="error">Failed to load files</div>';
         console.error('Error loading files:', error);
     }
+}
+
+// View document content
+async function viewDocument(filename) {
+    const viewer = document.getElementById('documentViewer');
+    
+    viewer.innerHTML = '<div class="loading">Loading document...</div>';
+    
+    try {
+        const response = await fetch(`${API_URL}/api/files/${encodeURIComponent(filename)}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+            viewer.innerHTML = `
+                <div class="document-header">
+                    <h3>${data.filename}</h3>
+                    <span class="document-length">${data.length} characters</span>
+                </div>
+                <div class="document-content">${escapeHtml(data.content)}</div>
+            `;
+        } else {
+            viewer.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        }
+        
+    } catch (error) {
+        viewer.innerHTML = '<div class="error">Failed to load document</div>';
+        console.error('Error viewing document:', error);
+    }
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML.replace(/\n/g, '<br>');
 }
 
 // Format file size
@@ -115,6 +134,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('uploadBtn').addEventListener('click', uploadFiles);
     document.getElementById('refreshBtn').addEventListener('click', loadFiles);
     
-    checkServer();
     loadFiles();
 });
