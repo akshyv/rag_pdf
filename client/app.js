@@ -1,4 +1,14 @@
 const API_URL = 'http://localhost:5000';
+// const API_URL = 'https://distressed-avifaunally-bryon.ngrok-free.dev';
+
+// Helper function to add ngrok header to all requests
+function fetchWithNgrokHeader(url, options = {}) {
+    if (!options.headers) {
+        options.headers = {};
+    }
+    options.headers['ngrok-skip-browser-warning'] = 'true';
+    return fetch(url, options);
+}
 
 // Upload files
 async function uploadFiles() {
@@ -26,7 +36,7 @@ async function uploadFiles() {
         formData.append('file', file);
         
         try {
-            const response = await fetch(`${API_URL}/api/upload`, {
+            const response = await fetchWithNgrokHeader(`${API_URL}/api/upload`, {
                 method: 'POST',
                 body: formData
             });
@@ -63,8 +73,22 @@ async function loadFiles() {
     const filesList = document.getElementById('filesList');
     
     try {
-        const response = await fetch(`${API_URL}/api/files`);
+        console.log('Fetching files from:', `${API_URL}/api/files`);
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/files`);
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        // Check if response is HTML (ngrok warning page)
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/html')) {
+            console.error('Received HTML instead of JSON - likely ngrok warning page');
+            filesList.innerHTML = '<div class="error">Connection error: Check if backend URL is correct and ngrok is running</div>';
+            return;
+        }
+        
         const data = await response.json();
+        console.log('Files data:', data);
         
         if (data.files.length === 0) {
             filesList.innerHTML = '<div class="empty-state">No documents uploaded yet</div>';
@@ -113,7 +137,7 @@ async function loadFiles() {
         });
         
     } catch (error) {
-        filesList.innerHTML = '<div class="error">Failed to load files</div>';
+        filesList.innerHTML = '<div class="error">Failed to load files. Check console for details.</div>';
         console.error('Error loading files:', error);
     }
 }
@@ -125,7 +149,7 @@ async function processDocument(filename) {
     statusDiv.className = '';
     
     try {
-        const response = await fetch(`${API_URL}/api/process/${encodeURIComponent(filename)}`, {
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/process/${encodeURIComponent(filename)}`, {
             method: 'POST'
         });
         
@@ -158,7 +182,7 @@ async function deleteDocument(filename) {
     statusDiv.className = '';
     
     try {
-        const response = await fetch(`${API_URL}/api/files/${encodeURIComponent(filename)}`, {
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/files/${encodeURIComponent(filename)}`, {
             method: 'DELETE'
         });
         
@@ -203,7 +227,7 @@ async function searchDocuments() {
     searchResults.innerHTML = '<div class="loading">Searching...</div>';
     
     try {
-        const response = await fetch(`${API_URL}/api/search`, {
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -259,7 +283,7 @@ async function askQuestion() {
     askResults.innerHTML = '<div class="loading">Thinking...</div>';
     
     try {
-        const response = await fetch(`${API_URL}/api/ask`, {
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/ask`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -312,7 +336,7 @@ async function viewDocument(filename) {
     viewer.innerHTML = '<div class="loading">Loading document...</div>';
     
     try {
-        const response = await fetch(`${API_URL}/api/files/${encodeURIComponent(filename)}`);
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/files/${encodeURIComponent(filename)}`);
         const data = await response.json();
         
         if (response.ok) {
@@ -347,8 +371,30 @@ function formatFileSize(bytes) {
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
+// Test API connection
+async function testConnection() {
+    console.log('Testing API connection...');
+    try {
+        const response = await fetchWithNgrokHeader(`${API_URL}/api/health`);
+        const data = await response.json();
+        console.log('API Health Check:', data);
+        return true;
+    } catch (error) {
+        console.error('API Connection Failed:', error);
+        return false;
+    }
+}
+
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Test connection first
+    const isConnected = await testConnection();
+    
+    if (!isConnected) {
+        document.getElementById('filesList').innerHTML = 
+            '<div class="error">Cannot connect to backend. Please check:<br>1. Backend is running<br>2. Ngrok tunnel is active<br>3. API_URL is correct</div>';
+    }
+    
     document.getElementById('uploadBtn').addEventListener('click', uploadFiles);
     document.getElementById('refreshBtn').addEventListener('click', loadFiles);
     document.getElementById('searchBtn').addEventListener('click', searchDocuments);
@@ -369,4 +415,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     loadFiles();
+    console.log('🔗 API URL:', API_URL);
 });
