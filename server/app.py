@@ -10,14 +10,24 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "ngrok-skip-browser-warning"],
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": False
+    }
+})
 # Configuration from environment variables
 UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'documents')
 ALLOWED_EXTENSIONS = {'pdf', 'txt'}
 MAX_FILE_SIZE = int(os.getenv('MAX_FILE_SIZE_MB', '16')) * 1024 * 1024
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Ngrok compatibility: Allow requests from any origin when using ngrok
+app.config['SERVER_NAME'] = None  # Allow any host
+app.config['APPLICATION_ROOT'] = '/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Initialize ChromaDB with persistent storage

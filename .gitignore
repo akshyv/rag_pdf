@@ -31,3 +31,7 @@ venv/
 server/documents/*
 server/chroma_db/
 
+# Ngrok Environment 
+ngrok_client.yml
+ngrok_server.yml
+
